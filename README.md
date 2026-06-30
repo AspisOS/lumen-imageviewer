@@ -1,25 +1,25 @@
 # lumen-imageviewer
 
-The image viewer for **AspisOS**, a capability-based, no-ambient-authority
+The image viewer for **LoricaOS**, a capability-based, no-ambient-authority
 x86-64 operating system built on the from-scratch
-[Aegis](https://github.com/AspisOS/Aegis) kernel. imageviewer decodes a single
+[Aegis](https://github.com/LoricaOS/Aegis) kernel. imageviewer decodes a single
 image, renders it with fit / zoom / pan controls, and can drag the file back out
 to another window. It is a standalone client of the
-[lumen](https://github.com/AspisOS/lumen) compositor, distributed as a
-[herald](https://github.com/AspisOS/AspisOS) system package and installed into
+[lumen](https://github.com/LoricaOS/lumen) compositor, distributed as a
+[herald](https://github.com/LoricaOS/LoricaOS) system package and installed into
 the `/apps` bundle tree.
 
 ## Where imageviewer fits
 
-AspisOS is decomposed into independent repositories. imageviewer is a leaf: a
+LoricaOS is decomposed into independent repositories. imageviewer is a leaf: a
 GUI application that talks only to the compositor and the kernel.
 
 | Repo | Role |
 |------|------|
-| [`AspisOS/Aegis`](https://github.com/AspisOS/Aegis) | The kernel. Provides the `AF_UNIX` sockets, `memfd`, the filesystem, and the capability model. |
-| [`AspisOS/lumen`](https://github.com/AspisOS/lumen) | The compositor / display server. Every window imageviewer draws is a proxy surface owned by lumen. |
-| [`AspisOS/glyph`](https://github.com/AspisOS/glyph) | The GUI toolkit. Supplies the software renderer (`draw_*`), the `stb_image` wrapper (`glyph_pixbuf_*`), and the **client side of lumen's window protocol** (`lumen_client.h`). |
-| `AspisOS/lumen-imageviewer` | **This repo.** An external Lumen client, the same pattern as the calculator, settings, terminal, and file manager. |
+| [`LoricaOS/Aegis`](https://github.com/LoricaOS/Aegis) | The kernel. Provides the `AF_UNIX` sockets, `memfd`, the filesystem, and the capability model. |
+| [`LoricaOS/lumen`](https://github.com/LoricaOS/lumen) | The compositor / display server. Every window imageviewer draws is a proxy surface owned by lumen. |
+| [`LoricaOS/glyph`](https://github.com/LoricaOS/glyph) | The GUI toolkit. Supplies the software renderer (`draw_*`), the `stb_image` wrapper (`glyph_pixbuf_*`), and the **client side of lumen's window protocol** (`lumen_client.h`). |
+| `LoricaOS/lumen-imageviewer` | **This repo.** An external Lumen client, the same pattern as the calculator, settings, terminal, and file manager. |
 
 imageviewer does not touch the framebuffer or input devices. It connects to
 lumen over `/run/lumen.sock`, receives a shared `memfd` to draw into, and gets a
@@ -58,7 +58,7 @@ on demand.
 
 ## Capabilities
 
-AspisOS has **no ambient authority**: a process can do nothing except through
+LoricaOS has **no ambient authority**: a process can do nothing except through
 capabilities granted by kernel policy at exec time. imageviewer's policy
 (`pkg/etc/aegis/caps.d/imageviewer`, installed to `/etc/aegis/caps.d/imageviewer`)
 is the baseline service profile:
@@ -82,7 +82,7 @@ against it, and packs a signed herald package.
 make MUSL_CC=/path/to/musl-gcc HERALD_KEY=/path/to/signing.key
 ```
 
-- `GLYPH_VERSION` pins the [glyph](https://github.com/AspisOS/glyph) toolkit
+- `GLYPH_VERSION` pins the [glyph](https://github.com/LoricaOS/glyph) toolkit
   release fetched by `tools/fetch-glyph.sh` (it unpacks `include/` and `lib/`
   into `toolkit/`).
 - `MUSL_CC` is the musl cross-compiler (defaults to `musl-gcc` on `PATH`; the
@@ -134,12 +134,12 @@ Build outputs (`component.elf`, `*.hpkg`, `*.hpkg.sig`) and the fetched
 ## Dependencies
 
 `depends=lumen` — imageviewer is a client of the
-[lumen](https://github.com/AspisOS/lumen) compositor, so installing it pulls
+[lumen](https://github.com/LoricaOS/lumen) compositor, so installing it pulls
 lumen, which in turn ships the desktop fonts every Lumen client inherits. There
 is no separate font package.
 
 ## Sibling components
 
-- [bastion](https://github.com/AspisOS/bastion) — display manager / login greeter
-- [lumen-sysmon](https://github.com/AspisOS/lumen-sysmon) — system monitor
-- [lumen-netman](https://github.com/AspisOS/lumen-netman) — network status panel
+- [bastion](https://github.com/LoricaOS/bastion) — display manager / login greeter
+- [lumen-sysmon](https://github.com/LoricaOS/lumen-sysmon) — system monitor
+- [lumen-netman](https://github.com/LoricaOS/lumen-netman) — network status panel
